@@ -1,0 +1,8 @@
+Mar 28 00:29:29, 1AEF23456B: connect from unknown[127.0.0.1]
+Mar 28 00:29:30, 1AEF23456B: from=<jn@example.net>, message-id=<demo1@example.net>
+Mar 28 00:29:31, 1AEF23456B: to=<somebody@domain.com>, dsn=5.5.1, delay=2
+
+Mar 29 07:47:11, 1234567890: connect from unknown[172.16.0.1]
+Mar 29 07:47:11, 1234567890: from=<sorry@domain.com>, message-id=<bug01@domain.com>
+Mar 29 07:47:12, 1234567890: to=<anybody@example.net>, dsn=2.0.0, delay=1
+Mar 29 07:47:12, 1234567890: removed
