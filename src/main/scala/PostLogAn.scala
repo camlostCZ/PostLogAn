@@ -35,34 +35,28 @@ object PostLogAn {
 }
 
 class PostLogAn {
-	/**
-	  * Container of log entries.
-	  * Key: queue ID
-	  * Value: log entry
-	  */
-	private val queue: mutable.Map[String, MessageLog] = mutable.Map()
-
 	def run(filename: String): Unit = {
 		//val line = "Mar 28 00:29:30, 1AEF23456BD: from=<jn@example.net>, message-id=<demo1@example.net>"
 		//val ml = parseLogLine(line)
 		//println(ml.mkString())
 
-		parseFile(filename)
+		val queue = parseFile(filename)
 		queue.foreach(it => {
 			println(it._2)
 			println()
 		})
 	}
 
-	def parseFile(filename: String): Unit = {
+	def parseFile(filename: String, queue: mutable.Map[String, MessageLog] = mutable.Map()): mutable.Map[String, MessageLog] = {
 		val f = BetterFile(filename)
 		for (line <- f.lineIterator) {
-			val mlog = parseLogLine(line)
+			val mlog = parseLogLine(line, queue)
 			mlog.foreach(it => { queue(it.qid) = it })
 		}
+		queue
 	}
 
-	def parseLogLine(line: String): Option[MessageLog] = {
+	def parseLogLine(line: String, queue: mutable.Map[String, MessageLog]): Option[MessageLog] = {
 		val patFrom = "^([^,]+), ([^:]+): from=<([^>]+)>, message-id=(<[^>]+>)$".r
 		val patTo   = "^([^,]+), ([^:]+): to=<([^>]+)>, dsn=([^,]+), delay=([^,]+)$".r
 		val patRem  = "^([^,]+), ([^:]+): removed$".r
