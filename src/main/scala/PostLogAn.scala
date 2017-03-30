@@ -35,11 +35,9 @@ object PostLogAn {
 }
 
 class PostLogAn {
-	def run(filename: String): Unit = {
-		//val line = "Mar 28 00:29:30, 1AEF23456BD: from=<jn@example.net>, message-id=<demo1@example.net>"
-		//val ml = parseLogLine(line)
-		//println(ml.mkString())
+	type LogContainer = mutable.Map[String, MessageLog]
 
+	def run(filename: String): Unit = {
 		val queue = parseFile(filename)
 		queue.foreach(it => {
 			println(it._2)
@@ -47,7 +45,7 @@ class PostLogAn {
 		})
 	}
 
-	def parseFile(filename: String, queue: mutable.Map[String, MessageLog] = mutable.Map()): mutable.Map[String, MessageLog] = {
+	def parseFile(filename: String, queue: LogContainer = mutable.Map()): LogContainer = {
 		val f = BetterFile(filename)
 		for (line <- f.lineIterator) {
 			val mlog = parseLogLine(line, queue)
@@ -56,7 +54,7 @@ class PostLogAn {
 		queue
 	}
 
-	def parseLogLine(line: String, queue: mutable.Map[String, MessageLog]): Option[MessageLog] = {
+	def parseLogLine(line: String, queue: LogContainer): Option[MessageLog] = {
 		val patFrom = "^([^,]+), ([^:]+): from=<([^>]+)>, message-id=(<[^>]+>)$".r
 		val patTo   = "^([^,]+), ([^:]+): to=<([^>]+)>, dsn=([^,]+), delay=([^,]+)$".r
 		val patRem  = "^([^,]+), ([^:]+): removed$".r
