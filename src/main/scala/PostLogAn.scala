@@ -19,7 +19,7 @@ case class MessageLog(id: String,
 }
 
 object PostLogAn {
-	def main(args: Array[String]) = {
+	def main(args: Array[String]): Unit = {
 		if (args.length == 1) {
 			val app = new PostLogAn
 			app.run(args(0))
@@ -28,7 +28,7 @@ object PostLogAn {
 			println(usage)
 	}
 
-	val usage =
+	val usage: String =
 		"""
 		  |Usage: PostLogAn <filename>
 		""".stripMargin
@@ -58,7 +58,7 @@ class PostLogAn {
 		val f = BetterFile(filename)
 		for (line <- f.lineIterator) {
 			val mlog = parseLogLine(line)
-			mlog.foreach(it => { queue.put(key = it.qid, value = it) })
+			mlog.foreach(it => { queue(it.qid) = it })
 		}
 	}
 
