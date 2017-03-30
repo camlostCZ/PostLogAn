@@ -82,7 +82,11 @@ class PostLogAn {
 				val tm = if (time == "") obj.time else time
 				val mid = if (msgId == "") obj.id else msgId
 				val sender = if (from == "") obj.from else from
-				Some(MessageLog(mid, qid, tm, sender, obj.removed || removed, Nil))
+				val delivery = rcpt match {
+					case "" => Nil
+					case _ => List(time, rcpt, "", delay, dsn, "")
+				}
+				Some(MessageLog(mid, qid, tm, sender, obj.removed || removed, delivery :: mlog.delivery))
 			}
 			case _ => Some(MessageLog(msgId, qid, time, from, removed, Nil))
 		}
