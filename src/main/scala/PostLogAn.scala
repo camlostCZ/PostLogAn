@@ -13,7 +13,7 @@ case class MessageLog(id: String,
 					  from: String,
 					  removed: Boolean,
 					  delivery: List[DeliveryLog]) {
-	def mkString(): String = {
+	override def toString(): String = {
 		s"Message ID = $id\nQueue ID = $qid\nTime = $time\nFrom = $from\nRemoved = $removed"
 	}
 }
@@ -49,7 +49,7 @@ class PostLogAn {
 
 		parseFile(filename)
 		queue.foreach(it => {
-			println(it._2.mkString())
+			println(it._2)
 			println()
 		})
 	}
